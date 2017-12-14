@@ -251,6 +251,7 @@ var _ = SecurityGroupsDescribe("App Instance Networking", func() {
 		BeforeEach(func() {
 			serverAppName, privateHost, privatePort = pushServerApp()
 			clientAppName = pushClientApp()
+			time.Sleep(10 * time.Second)
 			assertNetworkingPreconditions(clientAppName, privateHost, privatePort)
 		})
 
@@ -286,7 +287,7 @@ var _ = SecurityGroupsDescribe("App Instance Networking", func() {
 
 			By("Testing the connect is refused")
 			catnipCurlResponse = testAppConnectivity(clientAppName, dest.IP, dest.Port)
-			Expect(catnipCurlResponse.Stderr).To(ContainSubstring("refused"))
+			Expect(catnipCurlResponse.Stderr).To(ContainSubstring("timed out"))
 		})
 	})
 
