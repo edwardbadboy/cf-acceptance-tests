@@ -46,8 +46,8 @@ func handleConnection(conn net.Conn) {
 }
 
 func logIP() {
-	ip := os.Getenv("CF_INSTANCE_IP")
-	port := os.Getenv("CF_INSTANCE_PORT")
+	ip := os.Getenv("CF_INSTANCE_INTERNAL_IP")
+	port := "8080"
 	for {
 		fmt.Printf("ADDRESS: |%s:%s|\n", ip, port)
 		time.Sleep(5 * time.Second)
