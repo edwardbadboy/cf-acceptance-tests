@@ -62,7 +62,7 @@ var _ = RoutingDescribe("Multiple App Ports", func() {
 			CreateRouteMapping(app, secondRoute, 0, 7777, Config.DefaultTimeoutDuration())
 		})
 
-		It("should listen on multiple ports", func() {
+		PIt("should listen on multiple ports", func() {
 			Eventually(func() string {
 				return helpers.CurlApp(Config, secondRoute, "/port")
 			}, Config.DefaultTimeoutDuration(), "5s").Should(ContainSubstring("7777"))

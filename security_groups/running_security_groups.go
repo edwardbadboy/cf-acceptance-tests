@@ -160,7 +160,7 @@ func pushServerApp() (serverAppName string, privateHost string, privatePort int)
 	pushApp(serverAppName, Config.GetBinaryBuildpackName())
 	Expect(cf.Cf("start", serverAppName).Wait(Config.CfPushTimeoutDuration())).To(Exit(0))
 
-	privateHost, privatePort = getAppHostIpAndPort(serverAppName)
+	privateHost, privatePort = getAppContainerIpAndPort(serverAppName)
 	return
 }
 
@@ -195,6 +195,7 @@ var _ = SecurityGroupsDescribe("App Instance Networking", func() {
 
 			serverAppName, privateHost, privatePort = pushServerApp()
 			clientAppName = pushClientApp()
+			time.Sleep(10 * time.Second)
 			assertNetworkingPreconditions(clientAppName, privateHost, privatePort)
 		})
 
@@ -286,7 +287,7 @@ var _ = SecurityGroupsDescribe("App Instance Networking", func() {
 
 			By("Testing the connect is refused")
 			catnipCurlResponse = testAppConnectivity(clientAppName, dest.IP, dest.Port)
-			Expect(catnipCurlResponse.Stderr).To(ContainSubstring("refused"))
+			Expect(catnipCurlResponse.Stderr).To(ContainSubstring("timed out"))
 		})
 	})
 
