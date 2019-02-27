@@ -3,6 +3,7 @@ package routing
 import (
 	"fmt"
 	"regexp"
+	"time"
 
 	"code.cloudfoundry.org/cf-routing-test-helpers/helpers"
 	"github.com/cloudfoundry-incubator/cf-test-helpers/cf"
@@ -45,6 +46,8 @@ var _ = ZipkinDescribe("Zipkin Tracing", func() {
 					return curlOutput
 				}, Config.DefaultTimeoutDuration()).Should(ContainSubstring("parents:"))
 
+				time.Sleep(10 * time.Second)
+
 				appLogsSession := cf.Cf("logs", "--recent", app1)
 
 				Eventually(appLogsSession, Config.DefaultTimeoutDuration()).Should(gexec.Exit(0))
@@ -64,6 +67,8 @@ var _ = ZipkinDescribe("Zipkin Tracing", func() {
 					curlOutput = cf_helpers.CurlApp(Config, hostname, "/", "-H", header1, "-H", header2)
 					return curlOutput
 				}, Config.DefaultTimeoutDuration()).Should(ContainSubstring("parents:"))
+
+				time.Sleep(10 * time.Second)
 
 				appLogsSession = cf.Cf("logs", "--recent", hostname)
 
