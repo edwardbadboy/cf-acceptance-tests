@@ -19,7 +19,7 @@ func ReleaseHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 func MyIPHandler(res http.ResponseWriter, req *http.Request) {
-	cmd := exec.Command("bash", "-c", "ip route get 1 | awk '{print $NF;exit}'")
+	cmd := exec.Command("bash", "-c", "ip route get 1 | grep -oP '(?<=src )[0-9.]+'")
 	outBytes, _ := cmd.Output()
 
 	res.Write(outBytes)
